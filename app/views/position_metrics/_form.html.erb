@@ -1,0 +1,17 @@
+<%= form_for(@position_metric) do |f| %>
+  <% if @position_metric.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@position_metric.errors.count, "error") %> prohibited this position_metric from being saved:</h2>
+
+      <ul>
+      <% @position_metric.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

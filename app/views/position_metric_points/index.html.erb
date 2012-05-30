@@ -1,0 +1,21 @@
+<h1>Listing position_metric_points</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @position_metric_points.each do |position_metric_point| %>
+  <tr>
+    <td><%= link_to 'Show', position_metric_point %></td>
+    <td><%= link_to 'Edit', edit_position_metric_point_path(position_metric_point) %></td>
+    <td><%= link_to 'Destroy', position_metric_point, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Position metric point', new_position_metric_point_path %>

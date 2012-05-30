@@ -1,0 +1,21 @@
+<h1>Listing importance_metric_points</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @importance_metric_points.each do |importance_metric_point| %>
+  <tr>
+    <td><%= link_to 'Show', importance_metric_point %></td>
+    <td><%= link_to 'Edit', edit_importance_metric_point_path(importance_metric_point) %></td>
+    <td><%= link_to 'Destroy', importance_metric_point, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Importance metric point', new_importance_metric_point_path %>
