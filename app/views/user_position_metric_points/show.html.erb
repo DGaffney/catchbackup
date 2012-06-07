@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Key:</b>
+  <%= @user_position_metric_point.key %>
+</p>
+
+<p>
+  <b>Value:</b>
+  <%= @user_position_metric_point.value %>
+</p>
+
+<p>
+  <b>User position metric:</b>
+  <%= @user_position_metric_point.user_position_metric_id %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @user_position_metric_point.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_position_metric_point_path(@user_position_metric_point) %> |
+<%= link_to 'Back', user_position_metric_points_path %>

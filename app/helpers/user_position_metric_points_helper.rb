@@ -1,0 +1,2 @@
+module UserPositionMetricPointsHelper
+end

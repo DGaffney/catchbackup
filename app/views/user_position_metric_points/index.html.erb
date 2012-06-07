@@ -1,0 +1,29 @@
+<h1>Listing user_position_metric_points</h1>
+
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Value</th>
+    <th>User position metric</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @user_position_metric_points.each do |user_position_metric_point| %>
+  <tr>
+    <td><%= user_position_metric_point.key %></td>
+    <td><%= user_position_metric_point.value %></td>
+    <td><%= user_position_metric_point.user_position_metric_id %></td>
+    <td><%= user_position_metric_point.user_id %></td>
+    <td><%= link_to 'Show', user_position_metric_point %></td>
+    <td><%= link_to 'Edit', edit_user_position_metric_point_path(user_position_metric_point) %></td>
+    <td><%= link_to 'Destroy', user_position_metric_point, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New User position metric point', new_user_position_metric_point_path %>

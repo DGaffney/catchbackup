@@ -1,0 +1,296 @@
+/*
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require jquery-ui-1.8.18.custom
+ * require twitter/bootstrap
+ * require styles
+ * require_tree .
+*/
+
+// @import "twitter/bootstrap";
+
+// CSS Reset
+@import "twitter/bootstrap/reset";
+// Core variables and mixins
+@import "twitter/bootstrap/variables";
+@import "twitter/bootstrap/mixins";
+// Grid system and page structure
+@import "twitter/bootstrap/scaffolding";
+@import "twitter/bootstrap/grid";
+@import "twitter/bootstrap/layouts";
+// Base CSS
+@import "twitter/bootstrap/type";
+@import "twitter/bootstrap/code";
+@import "twitter/bootstrap/forms";
+@import "twitter/bootstrap/tables";
+// Components: common
+@import "twitter/bootstrap/sprites";
+@import "twitter/bootstrap/dropdowns";
+@import "twitter/bootstrap/wells";
+@import "twitter/bootstrap/component-animations";
+@import "twitter/bootstrap/close";
+// Components: Buttons & Alerts
+@import "twitter/bootstrap/buttons";
+@import "twitter/bootstrap/button-groups";
+@import "twitter/bootstrap/alerts"; // Note: alerts share common CSS with buttons and thus have styles in buttons
+// Components: Nav
+@import "twitter/bootstrap/navs";
+@import "twitter/bootstrap/navbar";
+// @import "twitter/bootstrap/breadcrumbs";
+// @import "twitter/bootstrap/pagination";
+// @import "twitter/bootstrap/pager";
+// Components: Popovers
+@import "twitter/bootstrap/modals";
+// @import "twitter/bootstrap/tooltip";
+// @import "twitter/bootstrap/popovers";
+// Components: Misc
+// @import "twitter/bootstrap/thumbnails";
+// @import "twitter/bootstrap/labels";
+// @import "twitter/bootstrap/progress-bars";
+// @import "twitter/bootstrap/accordion";
+// @import "twitter/bootstrap/carousel";
+@import "twitter/bootstrap/hero-unit";
+// Utility classes
+@import "twitter/bootstrap/utilities"; // Has to be last to override when necessary
+
+
+// CUSTOM STYLES //
+
+// @navbarLinkColor: @gray;
+// @navbarLinkColorHover: @stripeColor;
+// @navbarLinkColorActive: fade(@stripeColor, 80%);
+
+// @navbarLinkColorHover: desaturate(@stripeColor, 30%);
+@navbarLinkColorHover: @stripeColorDark;
+@navbarLinkColor: @stripeColor;
+@navbarLinkColorActive: @gray;
+
+@navbarLinkSize: 13px;
+@brandFontSize: 22px;
+@navbarHeight: 34px;
+@navbarBackground: #dddddd;
+@navbarBackgroundHighlight: lighten(@navbarBackground, 5%);
+@stripeColor: #496bbe;
+@stripeColorDark: #30477C;
+
+@gridColumnWidth: 58px;
+
+h1, h2, h3, h4, h5, h6 {
+  text-shadow: 0 1px 0 @white;
+}
+
+body {
+  padding-top: 0px;
+  background: #f0f0f0;
+  // background: #899CC9;
+}
+
+#main {
+  padding: 30px 30px 10px;
+  background: #fdfdfd;
+  margin-bottom: 20px;
+  -webkit-box-shadow: 0 10px 50px rgba(0,0,0,0.15)!important;
+  -moz-box-shadow: 0 10px 50px rgba(0,0,0,0.15)!important;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.15)!important;
+  border: #DDD 1px solid!important;
+  border-top: none!important;
+  border-bottom: none!important;
+}
+
+footer {
+  color: #888;
+}
+
+.twitter-pic {
+  margin-right: 10px;
+  // .box-shadow;
+}
+
+li.open > a.dropdown-toggle {
+  color: @navbarLinkColorHover !important;
+}
+
+.navbar .nav .dropdown-toggle .caret, .navbar .nav .open.dropdown .caret {
+  border-top-color: @stripeColorDark;
+}
+
+
+// .navbar-fixed-top {
+//   position: absolute;
+// }
+
+// .divider-vertical { margin: 0 !important; }
+
+#main-nav { margin-bottom: 0; }
+
+#main-nav > .navbar-inner {
+  .box-shadow(none);
+  // overflow: hidden;
+  .border-radius(0);
+}
+
+.navbar-inner {
+  .box-shadow(none);
+  // overflow: hidden;
+  // .border-radius(0);
+}
+
+.img_shadow {
+  -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.15)!important;
+  -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.15)!important;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.15)!important;
+  border: #DDD 1px solid!important;
+  border-top-color: #EEE!important;
+  border-bottom-color: #BBB!important;
+  align: center;
+}
+
+.navbar .brand {
+  font-weight: normal;
+  font-size: @brandFontSize;
+  // color: @navbarLinkColor;
+  color: @stripeColorDark;
+  text-shadow: 0 1px 0 @white;
+  margin-left: 5px;
+  padding: floor((@navbarHeight - @brandFontSize) / 2) 20px;
+  line-height: @brandFontSize;
+  &:hover {
+    color: @stripeColor;
+  }
+  &:active {
+    color: @navbarLinkColorActive;
+  }
+}
+div .hero-unit {
+  background-image: url(/assets/background.jpg)
+}
+.stripe {
+  width: 25px;
+  height: @navbarHeight;
+  background: @stripeColor;
+  #gradient > .vertical(lighten(@stripeColor, 5%), @stripeColor);
+  float: left;
+  // .box-shadow;
+}
+.input-full{
+  width: 100%;
+}
+.over_image{
+  font-weight:bold;
+  font-size:24px;
+  color:#ccc;
+}
+.navbar .nav > li > a:hover {
+  background: transparent;
+  // color: fade(@stripeColor, 80%);
+  // background: fadeOut(@stripeColor, 95%);
+}
+
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+  background: transparent;
+  color: @navbarLinkColorHover;
+  // color: @stripeColor;
+  // background: fadeOut(@stripeColor, 95%);
+  #gradient > .vertical(darken(@navbarBackground, 5%), @navbarBackground);
+  &:active {
+    #gradient > .vertical(darken(@navbarBackground, 5%), @navbarBackground);
+    color: @navbarLinkColorActive;
+  }
+}
+div.researcher div.well{
+  height: 90px;
+}
+div .next_step_badge{
+  float:right;
+  margin-right: 20px;
+}
+div .header{
+  float:left;
+}
+#user-nav { margin-right: -30px; }
+
+.navbar #user-nav.nav > li > a {
+  font-size: @navbarLinkSize;
+  line-height: @navbarLinkSize;
+  padding: floor((@navbarHeight - @navbarLinkSize) / 2) 20px ;
+  // margin: 0 0 0 1px;
+  text-shadow: 0 1px 0 @white;
+  &:hover {
+    background: transparent;
+    color: @navbarLinkColorHover;
+    #gradient > .vertical(darken(@navbarBackground, 5%), @navbarBackground);
+  }
+  &:active {
+    color: @navbarLinkColorActive;
+    #gradient > .vertical(darken(@navbarBackground, 5%), @navbarBackground);
+  }
+}
+
+.navbar #global-nav.nav > li > a {
+  font-size: @navbarLinkSize;
+  line-height: @navbarLinkSize;
+  padding: floor((@navbarHeight - @navbarLinkSize) / 2) 20px ;
+  // margin: 0 0 0 1px;
+  text-shadow: 0 1px 0 @white;
+  &:hover {
+    background: transparent;
+    color: @navbarLinkColorHover;
+    #gradient > .vertical(darken(@navbarBackground, 5%), @navbarBackground);
+  }
+  &:active {
+    color: @navbarLinkColorActive;
+    #gradient > .vertical(darken(@navbarBackground, 5%), @navbarBackground);
+  }
+}
+
+div.tagsinput { border:1px solid #CCC; background: #FFF; padding:5px; width:300px; height:100px; overflow-y: auto;}
+div.tagsinput span.tag { border: 1px solid #a5d24a; -moz-border-radius:2px; -webkit-border-radius:2px; display: block; float: left; padding: 5px; text-decoration:none; background: #cde69c; color: #638421; margin-right: 5px; margin-bottom:5px;font-family: helvetica;  font-size:13px;}
+div.tagsinput span.tag a { font-weight: bold; color: #82ad2b; text-decoration:none; font-size: 11px;  } 
+div.tagsinput input { width:80px; margin:0px; font-family: helvetica; font-size: 13px; border:1px solid transparent; padding:5px; background: transparent; color: #000; outline:0px;  margin-right:5px; margin-bottom:5px; }
+div.tagsinput div { display:block; float: left; } 
+.tags_clear { clear: both; width: 100%; height: 0px; }
+.not_valid {background: #FBD8DB !important; color: #90111A !important;}
+
+/* .nav li a { padding:0; }*/
+/* .navbar .nav > li > a { padding:0px 0 1px; }*/
+/* .navbar .brand { padding:0 }*/
+/* .row-padded20 { padding-top:20px; padding-bottom:20px; }*/
+/* .row { padding-top:20px; padding-bottom:20px; }*/
+/* .row { margin-bottom:40px; }*/
+.align-center { text-align: center; }
+.gray9 { color: #999; }
+.gray6 { color: #666; }
+
+.well { .border-radius(6px); .box-shadow(none); border: none; }
+.well.upgrade_requested { .border-radius(6px); .box-shadow(none); background-color: #FCF8E3; }
+
+#map-wrap { position:relative; }
+
+#map-canvas {
+    position: relative;
+    width: 876px;
+    height: 500px; 
+    display: block; 
+    margin: 40px auto;
+}
+#time-slider { margin: 14px 0}
+#importance-slider { margin: 14px 0}
+#proximity-slider { margin: 14px 0}
+label.error { font-weight: bold; color: red; }
+
+div#terms-or-location div.well{
+	height:120px;
+}
+
+h2 a:hover{
+  color:#000;
+}
+
+h2 a{
+  color:#000;
+}

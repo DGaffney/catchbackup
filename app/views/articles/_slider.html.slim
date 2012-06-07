@@ -1,0 +1,22 @@
+.row
+  .span12
+    = form_tag(filter_articles_path, id: 'filter-results') do
+      fieldset
+        .control-group
+          #time-slider
+          h3.align-center#time_output Time: #{exact_time(params[:time].to_i || 3600)}
+          = hidden_field_tag :time, params[:time] || 3600
+          #time-salience-slider
+          h3.align-center#time_salience_output Time Importance: #{percentage(params[:time_salience].to_i || 100)}
+          = hidden_field_tag :time_salience, params[:time_salience] || 100
+          #importance-slider
+          h3.align-center#importance_output Objective Importance: #{percentage(params[:importance].to_i || 100)}
+          = hidden_field_tag :importance, params[:importance] || 100
+          #proximity-slider
+          h3.align-center#proximity_output Proximity: #{percentage(params[:proximity].to_i || 100)}
+          = hidden_field_tag :proximity, params[:proximity] || 100
+
+          .form-actions.align-center
+            p
+              = submit_tag 'Filter', class: 'btn btn-primary'
+            p = link_to 'Back', '#', id: 'back-to-new-curation', class: 'btn'

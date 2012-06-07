@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @user_position_metric.name %>
+</p>
+
+<p>
+  <b>Metric type:</b>
+  <%= @user_position_metric.metric_type %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_position_metric_path(@user_position_metric) %> |
+<%= link_to 'Back', user_position_metrics_path %>

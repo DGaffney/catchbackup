@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  key: MyString
+  value: MyString
+  user_position_metric_id: 1
+  user_id: 1
+
+two:
+  key: MyString
+  value: MyString
+  user_position_metric_id: 1
+  user_id: 1
