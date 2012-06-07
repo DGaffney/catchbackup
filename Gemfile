@@ -23,7 +23,31 @@ end
 gem 'jquery-rails'
 gem 'resque'
 gem 'hashie'
+gem 'bitly'
 gem 'activerecord-import'
+gem "twitter-bootstrap-rails"
+gem 'RedCloth'
+gem 'require_all'
+gem 'mysql2'
+gem 'slim'
+gem 'omniauth-twitter'
+gem "will_paginate", "~> 3.0.pre2"
+gem 'ruby-debug19'
+gem 'twitter'
+group :assets do
+  gem 'less-rails-bootstrap'
+  # gem 'sass-rails',   '~> 3.2.3'
+  # gem 'coffee-rails', '~> 3.2.1'
+
+  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  # gem 'therubyracer'
+
+  # gem 'less-rails'
+  gem 'uglifier', '>= 1.0.3'
+end
+
+gem 'jquery-rails'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

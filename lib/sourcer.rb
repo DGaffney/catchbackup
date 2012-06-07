@@ -2,7 +2,8 @@ require 'open-uri'
 module Sourcer
   class NYTimes
     @queue = :file_serve
-    attr_accessor :newswire_api_key, :base_url
+    attr_accessor :newswire_api_key, :base_url    
+
     def self.perform
       ActiveRecord::Base.verify_active_connections!
       @newswire_api_key = Setting.find_by_key("newswire_api_key").actual_value
@@ -11,24 +12,42 @@ module Sourcer
       articles= []
       news_responses = self.most_recent_linear(offset)
       news_responses.each do |response|
-        article = Article.create(self.select_fields(response, @source.id))
-        articles << article
-        Resque.enqueue(Positioner::NYTimes, article, response)
+        begin
+          article = Article.new(self.select_fields(response, @source.id))
+          if article.save
+            articles << article
+            Resque.enqueue(Positioner::NYTimes, article, response)
+            Resque.enqueue(Importancer::NYTimes, article, response)
+          end
+        rescue
+          next
+        end
       end
       while news_responses.length != 0
-        offset+=news_responses.length
-        news_responses = self.most_recent_linear(offset)
-        news_responses.each do |response|
-          article = Article.create(self.select_fields(response, @source.id))
-          articles << article
-          Resque.enqueue(Positioner::NYTimes, article, response)
-        end      
-        print "."
+        begin
+          offset+=news_responses.length
+          news_responses = self.most_recent_linear(offset)
+          news_responses.each do |response|
+            begin
+              article = Article.create(self.select_fields(response, @source.id))
+              if article.save
+                articles << article
+                Resque.enqueue(Positioner::NYTimes, article, response)
+                Resque.enqueue(Importancer::NYTimes, article, response)
+              end
+            rescue
+              next
+            end
+          end      
+          print "."
+        rescue
+          retry
+        end
       end
     end
 
     def self.select_fields(article, source_id)
-      return {:title => article.title, :author => self.clean_byline(article), :abstract => article.abstract, :url => article.url, :source_id => source_id, :created_at => Time.parse(article.created_date)}
+      return {:title => article.title, :abstract => article.abstract, :url => article.url, :source_id => source_id, :created_at => Time.parse(article.created_date)}
     end
 
     def self.most_recent_linear(offset=0)
@@ -44,10 +63,6 @@ module Sourcer
     def self.specific_article_details(url)
       @base_url = "http://api.nytimes.com/svc/news/v3/content.json"
       return Hashie::Mash[JSON.parse(open(@base_url+"?api-key=#{@newswire_api_key}&url="+url.gsub("/", "%2F")).read)].results
-    end
-
-    def self.clean_byline(article)
-      return article.byline.downcase.gsub("by ", "").split(/,|and /).collect{|x| x.strip}.select{|x| !x.empty?}.collect{|a| a.split(" ").collect(&:capitalize).join(" ")}.join(", ")
     end
   end
 end

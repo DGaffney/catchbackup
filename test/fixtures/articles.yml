@@ -3,9 +3,11 @@
 one:
   title: MyString
   url: MyString
-  content: MyText
+  abstract: MyText
+  created_at: 2012-06-01 15:20:36
 
 two:
   title: MyString
   url: MyString
-  content: MyText
+  abstract: MyText
+  created_at: 2012-06-01 15:20:36

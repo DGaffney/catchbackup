@@ -31,7 +31,7 @@ Catchbackup::Application.configure do
 
   # Do not compress assets
   config.assets.compress = false
-
+  config.assets.precompile += %w( google-maps-box.js jquery-tags-input.js jquery.ui.mouse.min.js jquery.ui.slider.min.js jquery.ui.widget.min.js jquery-ui-1.8.18.custom.css )
   # Expands the lines which load the assets
   config.assets.debug = true
 end

@@ -1,27 +1,20 @@
 <h1>Listing articles</h1>
-
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Url</th>
-    <th>Content</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @articles.each do |article| %>
-  <tr>
-    <td><%= article.title %></td>
-    <td><%= article.url %></td>
-    <td><%= article.content %></td>
-    <td><%= link_to 'Show', article %></td>
-    <td><%= link_to 'Edit', edit_article_path(article) %></td>
-    <td><%= link_to 'Destroy', article, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Article', new_article_path %>
+<div class="row">
+  <% last_span = 0;count=0;counts=[0,2,5,9];spans=[12,6,6,4,4,4,3,3,3,3,3,3,3,3];spans.each do |span| %>
+    <% article = @articles[count]%>
+    <% if article %>
+      <span class="span<%= span %>">
+        <h2><a href="<%= article.url %>"><%= article.title %></a></h2>
+        (<%= article.created_at %>, SCORE: <%= article.score(params) %>)<br />
+        <p><%= article.abstract %></p>
+      </span>
+      <% if counts.include?(count)%>
+        </div>
+        <hr />
+        <div class="row">
+      <% end %>
+      <%count+=1%>
+    <% end %>
+  <% end %>
+</div>
+<%= render :partial => 'slider'%>

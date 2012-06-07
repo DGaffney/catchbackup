@@ -2,8 +2,12 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.all
-
+    params[:time] = (params[:time]&&params[:time].to_f) || 3600*24*7
+    params[:time_salience] = (params[:time_salience]&&params[:time_salience].to_f) || 100
+    params[:importance] = (params[:importance]&&params[:importance].to_f) || 100
+    params[:proximity] = (params[:proximity]&&params[:proximity].to_f) || 100
+    params[:user_id] = (current_user&&current_user.id) || 0
+    @articles = Article.sorted_articles(params)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @articles }

@@ -1,83 +1,82 @@
 class UsersController < ApplicationController
-  # GET /users
-  # GET /users.json
+  before_filter :login_required, except: [:index, :show]
+  before_filter :admin_required, only: [:destroy, :panel]
+
   def index
-    @users = User.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @users }
+    @page_title = "Users"
+    #removed dope-ass join because paginate wouldn't play nice.
+    if current_user && current_user.admin?
+    @users = User.paginate(:page => params[:page], :per_page => 16, :order => "id desc")
+    else
+      @users = User.where(:hidden_account => false).paginate(:page => params[:page], :per_page => 16, :order => "id desc")
     end
   end
 
-  # GET /users/1
-  # GET /users/1.json
+  def dashboard
+    @page_title = "Dashboard"
+    @user = User.find(current_user.id)
+    @curations = @user.curations.where("status != 'hidden'").paginate(:page => params[:page], :per_page => 10, :order => "id desc")
+    # @curations = @user.curations.order(:created_at)
+  end
+
   def show
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user }
-    end
+    @user = User.where(user_name: params[:user_name]).first
+    @page_title = @user.name
+    @curations = @user.curations.where("status != 'hidden'").paginate(:page => params[:page], :per_page => 20, :order => "id desc", :limit => 10)
   end
 
-  # GET /users/new
-  # GET /users/new.json
-  def new
-    @user = User.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @user }
-    end
-  end
-
-  # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = User.find_by_user_name(params[:user_name])
+    @page_title = "Editing "+@user.name
   end
 
-  # POST /users
-  # POST /users.json
-  def create
-    @user = User.new(params[:user])
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
-        format.json { render json: @user, status: :created, location: @user }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
+  def new
+    # NOTE: Not your typical 'new' because the user is already created
+    @user = User.find_by_user_name(params[:user_name])
   end
 
-  # PUT /users/1
-  # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
-
+    @user = User.find_by_user_name(params[:user_name], select: [:id, :user_name])
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { head :no_content }
+        format.html { redirect_to @user, flash: { success: "Your info has been updated." } }
+        format.js
       else
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.html { render action: 'edit', flash: { error: @reseacher.errors } }
+        format.js
       end
     end
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-
+    @user = User.find_by_user_name(params[:user_name], select: [:id])
     respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
+      if @user.destroy
+        format.html { redirect_to @user, notice: "User successfully updated." }
+        format.js
+      else
+        format.html { render action: 'edit' }
+        format.js
+      end
     end
+  end
+  
+  def panel
+  end
+  
+  def upgrade
+    @user = User.find_by_user_name(params[:user_name])
+    roles = Setting.find_by_name("roles").actual_value
+    @user.role = roles[roles.index(@user.role)+1]
+    @user.upgrade_requested = false
+    @user.save!
+    redirect_to request.referer
+  end
+
+  def request_upgrade
+    @user = User.find_by_user_name(params[:user_name])
+    @user.upgrade_requested = true
+    @user.save!
+    redirect_to request.referer
   end
 end
