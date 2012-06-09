@@ -8,8 +8,8 @@ class Article < ActiveRecord::Base
     # params[:importance_metric_id] = importance_metric.id
     # highest_score = ImportanceMetricPoint.first(:conditions => {:importance_metric_id => importance_metric.id}, :order => "`key` desc")
     # params[:highest_score] = highest_score.key.to_f
-    self.where(["created_at > ?", Time.now-params[:start].to_i], ["created_at < ?", Time.now-params[:end].to_i]]).sort{|x,y| x.score(params)<=>y.score(params)}.reverse
-    self.where(:created_at => (Time.now-params[:end].to_i)..(Time.now-params[:start].to_i))
+    self.where(["created_at > ?", Time.now-params[:start].to_i], ["created_at < ?", Time.now-params[:end].to_i]])
+    self.where(:created_at => (Time.now-params[:end].to_i)..(Time.now-params[:start].to_i)).sort{|x,y| x.score(params)<=>y.score(params)}.reverse
   end
 
   # def importances
@@ -38,13 +38,13 @@ class Article < ActiveRecord::Base
       return 0
     else
       user = User.find(params[:user_id])
-      position_metrics = UserPositionMetric.where(:metric_type => "position")
       sum = 0
-      position_metrics.each do |position_metric|
-        position_metric_points = UserPositionMetricPoint.where(:user_id => user.id, :user_position_metric_id => position_metric.id, :key => self.id).collect(&:value)
-        sum+=position_metric_points.collect(&:to_i).sum
+      count = 0.0
+      UserPositionMetric.joins(:user_position_metric_points).where("user_position_metric_points.user_id" => user.id).uniq.each do |position_metric|
+        sum+=position_metric.calculate_sub_score(self, params[:user_id])
+        count+=1
       end
-      return sum
+      return sum/count
     end
   end
   
