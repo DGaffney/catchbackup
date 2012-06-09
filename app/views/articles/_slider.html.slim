@@ -5,7 +5,8 @@
         .control-group
           #time-slider
           h3.align-center#time_output Time: #{exact_time(params[:time].to_i || 3600)}
-          = hidden_field_tag :time, params[:time] || 3600
+          = hidden_field_tag :start, params[:start] || 3600
+          = hidden_field_tag :end, params[:start] || 3600
           #time-salience-slider
           h3.align-center#time_salience_output Time Importance: #{percentage(params[:time_salience].to_i || 100)}
           = hidden_field_tag :time_salience, params[:time_salience] || 100

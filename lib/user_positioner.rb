@@ -1,6 +1,6 @@
 require 'open-uri'
 module UserPositioner
-  class Twitter
+  class Twit
     @queue = :file_serve
     #this is a very taxing way to do this calculation, as it requires users*articles matrix calculations...
     def self.perform(user_id)
@@ -19,23 +19,35 @@ module UserPositioner
     
     def self.catalog_tweets(user)
       lat_lon = [nil,nil]
-      user_timeline = Twitter.user_timeline(:include_entities => true)
       user_timeline.each do |tweet|
         lat_lon = self.derive_lat_lon(tweet) if lat_lon != [nil,nil]
       end
-      words = user_timeline.collect{|x| x.text.split(/\b/).collect{|y| y.gsub(/\W/, "").downcase}}.flatten.uniq
-      position_metric = PositionMetric.find_by_name("keywords")
-      user_position_metric = UserPositionMetric.find_by_name("keywords")
+      geo = Geokit::Geocoders::GoogleGeocoder3.do_geocode(user.location)
+      self.pull_words(user)
+      lat_lon = [geo.lat, geo.lng] if lat_lon == [nil,nil]
       location_metric = UserPositionMetric.find_by_name("location")
-      user_position_metric_points = []
-      position_metric.position_metric_points.where(:key => words).each do |pmp|
-        @user_position_metric_points << UserPositionMetricPoint.new(:key => pmp.key, :value => pmp.value, :user_position_metric_id => user_position_metric.id, :user_id => user.id)
-      end
       if lat_lon != [nil,nil]
         @user_position_metric_points << UserPositionMetricPoint.new(:key => "last_known_position", :value => "#{lat_lon.join(",")}", :user_position_metric_id => location_metric.id, :user_id => user.id)
       end
     end
     
+    def self.pull_words(user)
+      user_timeline = Twitter.user_timeline(:include_entities => true, :count => 200)
+      max_id = user_timeline.last.id
+      text_bundle = []
+      while !user_timeline.empty?
+        text_bundle |= user_timeline.collect{|x| x.text.split(/\b/).collect{|y| y.gsub(/\W/, "").downcase}}.flatten.uniq
+        user_timeline = Twitter.user_timeline(:include_entities => true, :count => 200, :max_id => max_id-1)
+        max_id = user_timeline.last.id
+      end
+      position_metric = PositionMetric.find_by_name("keywords")
+      user_position_metric = UserPositionMetric.find_by_name("keywords")
+      user_position_metric_points = []
+      position_metric.position_metric_points.where(:key => text_bundle).each do |pmp|
+        @user_position_metric_points << UserPositionMetricPoint.new(:key => pmp.key, :value => pmp.value, :user_position_metric_id => user_position_metric.id, :user_id => user.id)
+      end
+    end
+
     def self.keyword_score(user)
       position_metric = PositionMetric.find_by_name("keywords")
       keywords = UserPositionMetric.find_by_name("keywords")

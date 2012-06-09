@@ -2,7 +2,8 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    params[:time] = (params[:time]&&params[:time].to_f) || 3600*24*7
+    params[:start] = (params[:start]&&params[:start].to_f) || 0
+    params[:end] = (params[:end]&&params[:end].to_f) || 3600*24*7*2
     params[:time_salience] = (params[:time_salience]&&params[:time_salience].to_f) || 100
     params[:importance] = (params[:importance]&&params[:importance].to_f) || 100
     params[:proximity] = (params[:proximity]&&params[:proximity].to_f) || 100

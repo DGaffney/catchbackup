@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120213140644) do
+ActiveRecord::Schema.define(:version => 20120303140644) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -81,6 +81,8 @@ ActiveRecord::Schema.define(:version => 20120213140644) do
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
   end
+
+  add_index "user_position_metric_points", ["user_position_metric_id", "user_id", "key", "value"], :name => "unique_upmp", :unique => true
 
   create_table "user_position_metrics", :force => true do |t|
     t.string   "name"

@@ -57,6 +57,8 @@ GEM
       addressable (~> 2.2)
       multipart-post (~> 1.1)
       rack (~> 1.1)
+    geokit (1.6.5)
+      multi_json
     hashie (1.2.0)
     hike (1.2.1)
     httparty (0.8.3)
@@ -198,6 +200,7 @@ DEPENDENCIES
   activerecord-import
   bitly
   coffee-rails (~> 3.2.1)
+  geokit
   hashie
   jquery-rails
   less-rails-bootstrap

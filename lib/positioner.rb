@@ -11,6 +11,7 @@ module Positioner
       self.news_type(Hashie::Mash[article], Hashie::Mash[response])
       self.section(Hashie::Mash[article], Hashie::Mash[response])
       self.related_urls(Hashie::Mash[article], Hashie::Mash[response])
+      self.geolocate(Hashie::Mash[article], Hashie::Mash[response])
       PositionMetricPoint.import(@position_metric_points)
     end
 
@@ -61,7 +62,15 @@ module Positioner
         @position_metric_points << PositionMetricPoint.new(:key => url, :value => 1, :article_id => article.id, :position_metric_id => related_url.id)
       end
     end
-  
+    
+    def self.geolocate(article, news_response)
+      locations = PositionMetric.find_by_name("locations")
+      news_response["geo_facet"].each do |geo_loc|
+        geo = Geokit::Geocoders::GoogleGeocoder3.do_geocode(geo_loc)
+        @position_metric_points << PositionMetricPoint.new(:key => "#{geo.lat},#{geo.lng}", :value => 1, :article_id => article.id, :position_metric_id => locations.id) if geo.lat && geo.lng
+      end
+    end
+    
     def self.clean_byline(article)
       return article.byline.downcase.gsub("by ", "").split(/,|and /).collect{|x| x.strip}.select{|x| !x.empty?}.collect{|a| a.split(" ").collect(&:capitalize).join(" ")}
     end

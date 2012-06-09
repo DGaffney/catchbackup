@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
     user.info = auth.extra.raw_info.description
     user.join_date = Time.now
     user.save!
-    UserPositioner::Twitter.perform(user.id)
+    UserPositioner::Twit.perform(user.id)
   end
 
 

@@ -4,35 +4,33 @@ class Article < ActiveRecord::Base
   belongs_to :source
   
   def self.sorted_articles(params)
-    newest_article = self.last(:order => :created_at)
-    params[:newest_article_date] = newest_article.created_at
-    importance_metric = ImportanceMetric.find_by_name("final_score")
-    params[:importance_metric_id] = importance_metric.id
-    highest_score = ImportanceMetricPoint.first(:conditions => {:importance_metric_id => importance_metric.id}, :order => "`key` desc")
-    params[:highest_score] = highest_score.key.to_f
-    self.where(["created_at > ?", Time.now-params[:time].to_i]).sort{|x,y| x.score(params)<=>y.score(params)}.reverse
+    # importance_metric = ImportanceMetric.find_by_name("final_score")
+    # params[:importance_metric_id] = importance_metric.id
+    # highest_score = ImportanceMetricPoint.first(:conditions => {:importance_metric_id => importance_metric.id}, :order => "`key` desc")
+    # params[:highest_score] = highest_score.key.to_f
+    self.where(["created_at > ?", Time.now-params[:start].to_i], ["created_at < ?", Time.now-params[:end].to_i]]).sort{|x,y| x.score(params)<=>y.score(params)}.reverse
+    self.where(:created_at => (Time.now-params[:end].to_i)..(Time.now-params[:start].to_i))
   end
 
-  def importances
-    importance_metric_points-ImportanceMetricPoint.where(:importance_metric_id => ImportanceMetric.find_by_name("final_score"), :article_id => self.id)
-  end
+  # def importances
+  #   importance_metric_points-ImportanceMetricPoint.where(:importance_metric_id => ImportanceMetric.find_by_name("final_score"), :article_id => self.id)
+  # end
 
   def positions
     position_metric_points
   end
   
   def score(params)
-    print "."
     return (importance_score(params)+proximity_score(params)+time_score(params))/3
   end
   
   def importance_score(params)
-    point = ImportanceMetricPoint.where(:importance_metric_id => params[:importance_metric_id], :article_id => self.id).first
-    if point
-      return (point.key.to_f*params[:importance]).to_f/(params[:highest_score]*params[:importance]+0.00000000001)
-    else
+    # point = ImportanceMetricPoint.where(:importance_metric_id => params[:importance_metric_id], :article_id => self.id).first
+    # if point
+    #   return (point.key.to_f*params[:importance]).to_f/(params[:highest_score]*params[:importance]+0.00000000001)
+    # else
       return 0
-    end
+    # end
   end
   
   def proximity_score(params)

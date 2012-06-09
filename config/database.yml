@@ -10,7 +10,7 @@ development:
   username: root
   password: 
   host: localhost
-  database: cbu_live
+  database: cbu_dev
   port: 3306
   socket: /tmp/mysql.sock
 

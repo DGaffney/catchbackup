@@ -58,15 +58,17 @@ html
     javascript:
       $('#submit-filter').click(function() { $('#filter-results').submit(); });
       $(function() {
-        $('#time-slider').slider({
-            min: 60,
-            max: 604800*32,
-            value: #{params[:time].to_i || 3600},
-            slide: function(event, ui) {
-                $('#time_output').html(exact_time(reasonableIncrement(ui.value)));
-                $('#time').val(ui.value);
-              }
-        });
+        $( "#time-slider" ).slider({
+    			range: true,
+    			min: 0,
+    			max: 604800*32,
+    			values: [ 0, 604800 ],
+    			slide: function( event, ui ) {
+            $('#time_output').html(exact_time(ui.values[0],ui.values[1]));
+            $('#start').val(ui.values[0]);
+            $('#end').val(ui.values[1]);
+    			}
+    		});
         $('#time-salience-slider').slider({
             min: 0,
             max: 100,

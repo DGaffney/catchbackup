@@ -45,26 +45,12 @@ $(function () {
   });
 });
 
-function reasonableIncrement(s) {
-  s = parseInt(s);
-  if (s >= 60 && s < 60*60) { // minutes
-    return Math.floor(s/60)*60; // by the minute
-  } else if (s >= 60*60 && s < 60*60*24) { // hours
-    return Math.floor(s/60/60)*60*60; // by the hour
-  } else if (s >= 60*60*24 && s < 60*60*24*7) { // days
-    return Math.floor(s/60/60/3)*60*60*3; // every 3 hours
-  } else if (s >= 60*60*24*7) { // weeks
-    return Math.floor(s/60/60/24)*60*60*24; // by the day
-  } else {
-    return s;
-  }
-}
-
 $('form input.range').change( function() {
     $('form span.range_feedback').contents().replaceWith(this.value)
 })
 
-function exact_time(seconds) {
+function exact_time(start, end) {
+  var seconds = parseInt(end)-parseInt(start);
   var statement = "";
   var time_set = new Array();
   time_set.push(parseInt(seconds/(60*60*24*7)));
