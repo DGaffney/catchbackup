@@ -2,7 +2,7 @@ doctype 5
 html
   head
     title
-      | Catch Back Up
+      | Burst
       = ": #{@page_title}" if @page_title
     /[if lt IE 9]
       script src="http://html5shim.googlecode.com/svn/trunk/html5.js"
@@ -39,7 +39,8 @@ html
                     span style='background:url(https://si0.twimg.com/images/dev/cms/intents/bird/bird_blue/bird_16_blue.png) 0 50% transparent no-repeat; padding-left:22px;' Sign in with Twitter
 
     .container#main
-
+      div align="center"
+        img src="http://f.cl.ly/items/0A2R2F2h2w1z183s0Y0w/BurstLogo.jpg" width="400px" class="burstlogo"
       - flash.each do |k,v|
         div class="alert alert-#{k} align-center"
           a.close data-dismiss="alert" ×
@@ -62,7 +63,7 @@ html
     			range: true,
     			min: 0,
     			max: 604800*32,
-    			values: [ 0, 604800 ],
+    			values: [ #{params[:start] || 0}, #{params[:end] || 604800*4} ],
     			slide: function( event, ui ) {
             $('#time_output').html(exact_time(ui.values[0],ui.values[1]));
             $('#start').val(ui.values[0]);
@@ -72,7 +73,7 @@ html
         $('#time-salience-slider').slider({
             min: 0,
             max: 100,
-            value: #{params[:importance].to_i || 100},
+            value: #{params[:time_salience].to_i || 100},
             slide: function(event, ui) {
                 $('#time_salience_output').html(percentage(ui.value, "Time Salience"));
                 $('#time_salience').val(ui.value);

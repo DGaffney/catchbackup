@@ -12,12 +12,12 @@ module UserPositioner
         config.oauth_token = user.oauth_token
         config.oauth_token_secret = user.oauth_token_secret
       end
-      self.catalog_tweets(user)
-      self.keyword_score(user)
+      self.calculate_lat_lon(user)
+      self.pull_words(user)
       UserPositionMetricPoint.import(@user_position_metric_points)
     end
     
-    def self.catalog_tweets(user)
+    def self.calculate_lat_lon(user)
       lat_lon = [nil,nil]
       user_timeline.each do |tweet|
         lat_lon = self.derive_lat_lon(tweet) if lat_lon != [nil,nil]
@@ -45,26 +45,6 @@ module UserPositioner
       user_position_metric_points = []
       position_metric.position_metric_points.where(:key => text_bundle).each do |pmp|
         @user_position_metric_points << UserPositionMetricPoint.new(:key => pmp.key, :value => pmp.value, :user_position_metric_id => user_position_metric.id, :user_id => user.id)
-      end
-    end
-
-    def self.keyword_score(user)
-      position_metric = PositionMetric.find_by_name("keywords")
-      keywords = UserPositionMetric.find_by_name("keywords")
-      keywords_score = UserPositionMetric.find_by_name("keyword_score")
-      tags = keywords.user_position_metric_points.where(:user_id => user.id)
-      tag_scores = {}
-      tags.each do |tag|
-        Article.where(:id => PositionMetricPoint.where(:position_metric_id => position_metric.id, :key => tag.key).collect(&:article_id)).each do |article|
-          if tag_scores[article.id]
-            tag_scores[article.id] << tag.key
-          else
-            tag_scores[article.id] = [tag.key]
-          end
-        end
-      end
-      tag_scores.each_pair do |article_id, tags|
-        @user_position_metric_points << UserPositionMetricPoint.new(:key => article_id, :value => tags.length, :user_position_metric_id => keywords_score.id, :user_id => user.id)        
       end
     end
     

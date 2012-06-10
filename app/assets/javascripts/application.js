@@ -59,10 +59,7 @@ function exact_time(start, end) {
   seconds = seconds-time_set[time_set.length-1]*60*60*24
   time_set.push(parseInt(seconds/(60*60)));
   seconds = seconds-time_set[time_set.length-1]*60*60
-  time_set.push(parseInt(seconds/(60)));
-  seconds = seconds-time_set[time_set.length-1]*60
-  time_set.push(seconds);
-  ordered_set = new Array("Weeks", "Days", "Hours", "Minutes", "Seconds");
+  ordered_set = new Array("Weeks", "Days", "Hours");
   i = 0
   for(var i = 0; i < time_set.length;i++){
       if (time_set[i] == 1){

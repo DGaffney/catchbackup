@@ -4,17 +4,17 @@
       fieldset
         .control-group
           #time-slider
-          h3.align-center#time_output Time: #{exact_time(params[:time].to_i || 3600)}
-          = hidden_field_tag :start, params[:start] || 3600
-          = hidden_field_tag :end, params[:start] || 3600
-          #time-salience-slider
-          h3.align-center#time_salience_output Time Importance: #{percentage(params[:time_salience].to_i || 100)}
-          = hidden_field_tag :time_salience, params[:time_salience] || 100
+          h3.align-center#time_output Time: #{exact_time(params[:end].to_i-params[:start].to_i || 3600)}
+          = hidden_field_tag :start, params[:start] || 0
+          = hidden_field_tag :end, params[:end] || 3600*24*7*4
+          //#time-salience-slider
+          //h3.align-center#time_salience_output Time Importance: #{percentage(params[:time_salience].to_i || 100)}
+          //= hidden_field_tag :time_salience, params[:time_salience] || 100
           #importance-slider
-          h3.align-center#importance_output Objective Importance: #{percentage(params[:importance].to_i || 100)}
+          h3.align-center#importance_output Popularity: #{percentage(params[:importance].to_i || 100)}
           = hidden_field_tag :importance, params[:importance] || 100
           #proximity-slider
-          h3.align-center#proximity_output Proximity: #{percentage(params[:proximity].to_i || 100)}
+          h3.align-center#proximity_output Closeness: #{percentage(params[:proximity].to_i || 100)}
           = hidden_field_tag :proximity, params[:proximity] || 100
 
           .form-actions.align-center
