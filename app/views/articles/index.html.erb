@@ -1,11 +1,25 @@
+<% if current_user %>
 <div class="row">
-  <% last_span = 0;count=0;counts=[0,2,5,9];spans=[12,6,6,4,4,4,3,3,3,3,3,3,3,3];spans.each do |span| %>
+  <% last_span = 0;count=0;counts=[0,3,7,13];spans=[12,4,4,4,3,3,3,3,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1];spans.each do |span| %>
     <% article = @articles[count]%>
     <% if article %>
       <span class="span<%= span %> article<%= span %>">
-        <h2><a href="<%= article.url %>"><%= article.title %></a></h2>
-        <span class="stats"><%= article.created_at.strftime("%b, %d, %Y, at %H:%M") %> <span class="score"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span><br /></span>
+        <h2><a href="<%= article.url %>"><%= article.title %></a></h2><span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span><br />
+        <% if span == 12 %>
+        <span class="stats"><%= article.created_at.strftime("%b, %d, %Y, at %H:%M") %> </span>
         <p><img src="<%= Setting.find_by_key("logo").actual_value %>" width="20" height="20" alt=""><%= article.abstract %></p>
+        <div class="nav-list"></div>
+        <% elsif span == 2 %>
+          <img src="<%= Setting.find_by_key("logo").actual_value %>" width="20" height="20" alt="">
+          <span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span>
+        <% elsif span > 2 %>
+        <span class="stats"><%= article.created_at.strftime("%b, %d, %Y, at %H:%M") %> <span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span><br /></span>
+        <p><img src="<%= Setting.find_by_key("logo").actual_value %>" width="20" height="20" alt=""><%= article.abstract %></p>
+        <div class="nav-list"></div>
+        <% elsif span == 2 %>
+          <img src="<%= Setting.find_by_key("logo").actual_value %>" width="20" height="20" alt="">
+          <span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span>
+        <% end %>
       </span>
       <% if counts.include?(count)%>
         </div>
@@ -17,3 +31,5 @@
   <% end %>
 </div>
 <%= render :partial => 'slider'%>
+<% else %>
+<% end %>

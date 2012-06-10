@@ -23,11 +23,17 @@ html
   body
 
     .navbar#main-nav
-      // .navbar-fixed-top
+      //.navbar-fixed-top
       .navbar-inner
         .container
           a.brand href="/"
           .nav-collapse
+            ul.nav#global-nav
+              li class='active'
+                = link_to 'Home', "#"
+              li 
+                = link_to 'Settings', "#"
+
             ul.nav.pull-right#user-nav
               - if current_user
                 li
@@ -35,7 +41,6 @@ html
               - else
                 li
                   a href="/auth/twitter"
-                    // FIXME: do not hotlink twitterbird
                     span style='background:url(https://si0.twimg.com/images/dev/cms/intents/bird/bird_blue/bird_16_blue.png) 0 50% transparent no-repeat; padding-left:22px;' Sign in with Twitter
 
     .container#main
@@ -51,7 +56,7 @@ html
 
     .container
       footer
-        a href="/posts/5/policy" style="color:#888" cc-by-nc-sa CatchBackUp, 2012
+        a href="/posts/5/policy" style="color:#888" Burst, 2012
 
 
     script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"
@@ -75,7 +80,7 @@ html
             max: 100,
             value: #{params[:time_salience].to_i || 100},
             slide: function(event, ui) {
-                $('#time_salience_output').html(percentage(ui.value, "Time Salience"));
+                $('#time_salience_output').html(percentage(ui.value, "Freshness"));
                 $('#time_salience').val(ui.value);
               }
         });
@@ -84,7 +89,7 @@ html
             max: 100,
             value: #{params[:importance].to_i || 100},
             slide: function(event, ui) {
-                $('#importance_output').html(percentage(ui.value, "Importance"));
+                $('#importance_output').html(percentage(ui.value, "Popularity"));
                 $('#importance').val(ui.value);
               }
         });
@@ -93,7 +98,7 @@ html
             max: 100,
             value: #{params[:proximity].to_i || 100},
             slide: function(event, ui) {
-                $('#proximity_output').html(percentage(ui.value, "Proximity"));
+                $('#proximity_output').html(percentage(ui.value, "Closeness"));
                 $('#proximity').val(ui.value);
               }
         });
