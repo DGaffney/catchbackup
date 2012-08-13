@@ -19,7 +19,7 @@ module UserPositioner
     
     def self.calculate_lat_lon(user)
       lat_lon = [nil,nil]
-      user_timeline.each do |tweet|
+      Twitter.user_timeline(:include_entities => true, :count => 200).each do |tweet|
         lat_lon = self.derive_lat_lon(tweet) if lat_lon != [nil,nil]
       end
       geo = Geokit::Geocoders::GoogleGeocoder3.do_geocode(user.location)
@@ -35,10 +35,10 @@ module UserPositioner
       user_timeline = Twitter.user_timeline(:include_entities => true, :count => 200)
       max_id = user_timeline.last.id
       text_bundle = []
-      while !user_timeline.empty?
+      while !user_timeline.empty? && max_id
         text_bundle |= user_timeline.collect{|x| x.text.split(/\b/).collect{|y| y.gsub(/\W/, "").downcase}}.flatten.uniq
         user_timeline = Twitter.user_timeline(:include_entities => true, :count => 200, :max_id => max_id-1)
-        max_id = user_timeline.last.id
+        max_id = user_timeline.last.id rescue nil
       end
       position_metric = PositionMetric.find_by_name("keywords")
       user_position_metric = UserPositionMetric.find_by_name("keywords")

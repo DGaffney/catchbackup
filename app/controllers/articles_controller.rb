@@ -3,8 +3,8 @@ class ArticlesController < ApplicationController
   # GET /articles.json
   def index
     if current_user
-      params[:start] = (params[:start]&&params[:start].to_f) || 0
-      params[:end] = (params[:end]&&params[:end].to_f) || 3600*24*7*4
+      params[:start] = (params[:start]&&params[:start].to_f-60*60*24*7*4) || 0
+      params[:end] = (params[:end]&&params[:end].to_f-60*60*24*7*4) || 3600*24*7*4
       params[:time_salience] = 100
       params[:importance] = (params[:importance]&&params[:importance].to_f) || 100
       params[:proximity] = (params[:proximity]&&params[:proximity].to_f) || 100

@@ -4,21 +4,27 @@
     <% article = @articles[count]%>
     <% if article %>
       <span class="span<%= span %> article<%= span %>">
-        <h2><a href="<%= article.url %>"><%= article.title %></a></h2><span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span><br />
         <% if span == 12 %>
+        <h2><a href="<%= article.url %>"><%= article.title %></a><span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>% Match</span></h2>
         <span class="stats"><%= article.created_at.strftime("%b, %d, %Y, at %H:%M") %> </span>
         <p><img src="<%= Setting.find_by_key("logo").actual_value %>" width="20" height="20" alt=""><%= article.abstract %></p>
         <div class="nav-list"></div>
         <% elsif span == 2 %>
+          <h2><a href="<%= article.url %>"><%= article.title %></a></h2>
+
           <img src="<%= Setting.find_by_key("logo").actual_value %>" width="20" height="20" alt="">
           <span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span>
         <% elsif span > 2 %>
+          <h2><a href="<%= article.url %>"><%= article.title %></a></h2>
+          
         <span class="stats"><%= article.created_at.strftime("%b, %d, %Y, at %H:%M") %> <span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span><br /></span>
         <p><img src="<%= Setting.find_by_key("logo").actual_value %>" width="20" height="20" alt=""><%= article.abstract %></p>
         <div class="nav-list"></div>
         <% elsif span == 2 %>
           <img src="<%= Setting.find_by_key("logo").actual_value %>" width="20" height="20" alt="">
           <span class="score" style="color:<%= cycle("#be5122", "#e7302a", "#e9501e", "#f39200", "#f9b233", "#ffdd0e", "#f8ea1b") %>"><%= (@scores[article.id].to_f.round(2)*100).to_i %>%</span>
+        <% else %>
+        <h2><%= article.title %></h2>
         <% end %>
       </span>
       <% if counts.include?(count)%>

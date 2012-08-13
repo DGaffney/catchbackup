@@ -1,5 +1,5 @@
 require 'resque/server'
-Catchbackup::Application.routes.draw do
+Burst::Application.routes.draw do
   resources :user_position_metrics
 
   resources :user_position_metric_points

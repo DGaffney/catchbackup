@@ -17,7 +17,9 @@ module Sourcer
           if article.save
             articles << article
             Resque.enqueue(Positioner::NYTimes, article, response)
-            Resque.enqueue(Importancer::NYTimes, article, response)
+            Importancer.constants.select {|c| Class === Importancer.const_get(c)}.collect{|c| c.to_s.gsub(":", "")}.each do |a_class|
+              Resque.enqueue(Importancer.const_get("Clicks"), article)
+            end
           end
         rescue
           next
@@ -33,7 +35,9 @@ module Sourcer
               if article.save
                 articles << article
                 Resque.enqueue(Positioner::NYTimes, article, response)
-                Resque.enqueue(Importancer::NYTimes, article, response)
+                Importancer.constants.select {|c| Class === Importancer.const_get(c)}.collect{|c| c.to_s.gsub(":", "")}.each do |a_class|
+                  Resque.enqueue(Importancer.const_get("Clicks"), article)
+                end
               end
             rescue
               next
